@@ -7,5 +7,10 @@ import { supabase } from "./supabaseClient";
 export const getPosts = async ()=>{
   const {data,error} = await supabase
     .from('posts')
-    .select('*')
+    .select('*,users(nickname)')
+    .order('create_at');
+  if( error ){
+    throw new Error('게시글 가져오기 오류');
+  }
+  return data;
 }
