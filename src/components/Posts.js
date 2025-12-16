@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import {getPosts} from '../api/postsAPI';
 import { Link } from "react-router-dom";
 
-const Posts = () => {
+const Posts = ({userID}) => {
   const [posts,setPosts] = useState([]);
   useEffect(()=>{
     const getPostData = async ()=>{
@@ -35,6 +35,7 @@ const Posts = () => {
       <ul>
         {
           posts.map((item)=>{
+            console.log(item);
             return (
               <li key={item.id}>
                 <Link to={`/post/${item.id}`} className="post-item" style={style}>
@@ -47,6 +48,8 @@ const Posts = () => {
           })
         }
       </ul>
+      {/* 새글 작성 버튼 */}
+      <button><Link to="/newpost">새글작성</Link></button>
     </div>
   )
 }

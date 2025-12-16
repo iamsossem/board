@@ -40,3 +40,22 @@ export const getComments = async (postID)=>{
   }
   return data;
 }
+// 새 글 작성
+export const createPost = async ({title,content,userID})=>{
+  const {data,error} = await supabase
+    .from('posts')
+    .insert([{
+      title:title,
+      content: content,
+      user_id: userID
+    }])
+    .select();
+    if( error ){
+      throw new Error('새글 작성 시 insert에러');
+    }
+    return data;
+}
+// 게시글 수정 : 타이틀, 컨텐츠, update_at
+export const updatePost = async ({id,title,content})=>{
+  
+}
