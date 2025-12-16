@@ -8,6 +8,7 @@ export const getPosts = async ()=>{
   const {data,error} = await supabase
     .from('posts')
     .select('*,users(nickname)')
+    .eq('is_active',true)
     .order('create_at');
   if( error ){
     throw new Error('게시글 가져오기 오류');
@@ -56,6 +57,34 @@ export const createPost = async ({title,content,userID})=>{
     return data;
 }
 // 게시글 수정 : 타이틀, 컨텐츠, update_at
-export const updatePost = async ({id,title,content})=>{
-  
+export const updatePost = async ({id,title,content})=>{  
+  const { data, error } = await supabase
+    .from('posts')
+    .update({ title:title, content:content, update_at: new Date() })
+    .eq('id', id)
+    .select();
+  if( error ){
+    throw new Error('게시글 업데이트 오류');
+  }
+  return data;
+}
+
+//
+export const deletePost = async ({id})=>{
+  //게시글
+  const { data, error } = await supabase
+    .from('posts')
+    .update({ is_active:false })
+    .eq('id', id)
+    .select();
+  //댓글
+  const { comment, commentError} = await supabase
+    .from('comments')
+    .update({is_active:false})
+    .eq('post_id',id)
+    .select();
+  if( error || commentError ){
+    throw new Error('게시글 업데이트 오류');
+  }
+  return data;
 }

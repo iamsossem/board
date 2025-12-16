@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
-import { getPostById, getComments} from "../api/postsAPI";
+import { useNavigate, useParams } from "react-router-dom"
+import { getPostById, getComments, deletePost} from "../api/postsAPI";
 const PostDetail = ({userID}) => {
   const {id} = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
+  const navigate = useNavigate();
   useEffect(()=>{
     const fetchData = async ()=>{
       try{
@@ -23,7 +24,18 @@ const PostDetail = ({userID}) => {
     return;
   }
   const handleUpdate = ()=>{
-    
+    navigate(`/edit/${id}`);
+  }
+  const handleDelete = async ()=>{
+    try{
+      const data = await deletePost({id});
+      if(data){
+        alert('삭제되었습니다');
+        navigate('/');
+      }
+    } catch(error){
+      console.log(error);
+    }
   }
   return (
     <div className="post-detail">
@@ -37,7 +49,7 @@ const PostDetail = ({userID}) => {
       {
         (userID === post.user_id) && (
           <div className="btn-wrap">
-            <button>삭제</button>
+            <button onClick={handleDelete}>삭제</button>
             <button onClick={handleUpdate}>수정</button>
           </div>
         )

@@ -4,6 +4,7 @@ import Posts from "./components/Posts";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PostDetail from "./components/PostDetail";
 import NewPost from "./components/NewPost";
+import EditPost from "./components/EditPost";
 
 const App = () => {
   const [loginUser,setLoginUser] = useState(null);
@@ -26,6 +27,7 @@ const App = () => {
                 {/* 상세 페이지  */}
                 <Route path="/post/:id" element={<PostDetail userID={loginUser.id}/>}/>
                 <Route path="/newpost" element={<NewPost userID={loginUser.id}/>}/>
+                <Route path="/edit/:id" element={<EditPost userID={loginUser.id}/>}/>
               </Routes>
             </>
         )
